@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Emmanuella Jossy | Strategic Creative Director</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Mono:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0D0C0A;
+    --paper: #F5F0E8;
+    --gold: #C9A84C;
+    --gold-light: #E8D5A0;
+    --rust: #8B3A2A;
+    --cream: #FAF7F0;
+    --warm-gray: #8C8275;
+    --border: rgba(13,12,10,0.12);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* CURSOR */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, background 0.3s;
+  }
+  .cursor-ring {
+    position: fixed; width: 38px; height: 38px;
+    border: 1px solid var(--gold); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.6;
+  }
+  .cursor.hover { width: 20px; height: 20px; background: var(--rust); }
+  .cursor-ring.hover { width: 60px; height: 60px; opacity: 0.3; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+    background: linear-gradient(to bottom, rgba(250,247,240,0.96) 0%, transparent 100%);
+  }
+  .nav-logo {
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm-gray); text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--warm-gray); text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr;
+    position: relative; overflow: hidden;
+  }
+  .hero-left {
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 8rem 3rem 5rem; position: relative; z-index: 2;
+  }
+  .hero-eyebrow {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 2rem; opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3.5rem, 6vw, 6rem); font-weight: 900;
+    line-height: 0.95; color: var(--ink); margin-bottom: 0.5rem;
+    opacity: 0; animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-name em { font-style: italic; color: var(--rust); }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(1rem, 1.8vw, 1.4rem); font-weight: 300;
+    font-style: italic; color: var(--warm-gray); margin-bottom: 3rem;
+    opacity: 0; animation: fadeUp 1s 0.7s forwards;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 1rem;
+    font-family: 'DM Mono', monospace; font-size: 0.7rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--ink);
+    text-decoration: none; border-bottom: 1px solid var(--ink);
+    padding-bottom: 0.3rem; width: fit-content;
+    transition: color 0.3s, border-color 0.3s;
+    opacity: 0; animation: fadeUp 1s 0.9s forwards;
+  }
+  .hero-cta:hover { color: var(--gold); border-color: var(--gold); }
+  .hero-cta::after { content: '\2192'; transition: transform 0.3s; }
+  .hero-cta:hover::after { transform: translateX(6px); }
+
+  .hero-right {
+    position: relative; overflow: hidden; background: var(--paper);
+  }
+  .hero-right::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--gold-light) 0%, #D4B896 40%, #B8966A 100%);
+    opacity: 0.25; animation: fadeIn 1.5s 0.2s both;
+  }
+  .hero-grid-pattern {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px; opacity: 0.5;
+  }
+  .hero-large-text {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(5rem, 14vw, 16rem); font-weight: 900;
+    font-style: italic; color: var(--ink); opacity: 0.04;
+    white-space: nowrap; pointer-events: none; letter-spacing: -0.02em;
+  }
+
+  /* HERO PORTRAIT PLACEHOLDER */
+  .hero-portrait {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -62%);
+    width: 52%; aspect-ratio: 3 / 4;
+    background: rgba(13,12,10,0.05);
+    border: 1px dashed rgba(13,12,10,0.18);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.7rem; text-align: center; padding: 1.5rem;
+    z-index: 2;
+    /* To use a real image: set background-image: url('your-photo.jpg');
+       background-size: cover; background-position: center;
+       and remove the svg/span children inside */
+  }
+  .hero-portrait svg { opacity: 0.22; }
+  .hero-portrait-label {
+    font-family: 'DM Mono', monospace; font-size: 0.52rem;
+    letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--warm-gray); line-height: 1.5;
+  }
+
+  .hero-stat-block {
+    position: absolute; bottom: 5rem; left: 3rem; right: 3rem;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    opacity: 0; animation: fadeUp 1s 1.1s forwards; z-index: 3;
+  }
+  .hero-stat { border-top: 1px solid rgba(13,12,10,0.2); padding-top: 1rem; }
+  .stat-num {
+    font-family: 'Playfair Display', serif; font-size: 2.5rem;
+    font-weight: 700; color: var(--ink); line-height: 1; margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--warm-gray);
+  }
+
+  /* SECTION UTILITIES */
+  section { position: relative; }
+  .section-label {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold);
+    margin-bottom: 3rem; display: flex; align-items: center; gap: 1rem;
+  }
+  .section-label::before {
+    content: ''; width: 40px; height: 1px;
+    background: var(--gold); display: inline-block; flex-shrink: 0;
+  }
+
+  /* ABOUT */
+  .about {
+    padding: 8rem 3rem; display: grid;
+    grid-template-columns: 1fr 2fr; gap: 6rem; border-top: 1px solid var(--border);
+  }
+  .about-left { padding-top: 0.5rem; }
+  .about-right h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400;
+    font-style: italic; line-height: 1.3; margin-bottom: 2rem;
+  }
+  .about-body { font-size: 1.05rem; line-height: 1.85; color: #3A3730; margin-bottom: 1.5rem; }
+  .expertise-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 3rem; }
+  .expertise-item {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--warm-gray);
+    padding: 0.9rem 1.2rem; border: 1px solid var(--border);
+    transition: border-color 0.3s, color 0.3s, background 0.3s;
+  }
+  .expertise-item:hover { border-color: var(--gold); color: var(--ink); background: rgba(201,168,76,0.06); }
+
+  /* WORK */
+  .work {
+    padding: 8rem 3rem; border-top: 1px solid var(--border);
+    background: var(--ink); color: var(--cream);
+  }
+  .work .section-label { color: var(--gold); }
+  .work .section-label::before { background: var(--gold); }
+  .work-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5rem; }
+  .work-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 900;
+    line-height: 0.95; color: var(--cream);
+  }
+  .work-header h2 em { font-style: italic; color: var(--gold); }
+
+  .projects-list { display: flex; flex-direction: column; }
+
+  .project-item {
+    border-top: 1px solid rgba(245,240,232,0.12);
+    padding: 3.5rem 0;
+    display: grid; grid-template-columns: 60px 1fr auto;
+    gap: 3rem; align-items: start;
+    cursor: pointer; position: relative; transition: background 0.3s;
+  }
+  .project-item:last-child { border-bottom: 1px solid rgba(245,240,232,0.12); }
+  .project-item::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(201,168,76,0.04); opacity: 0;
+    transition: opacity 0.3s; pointer-events: none;
+  }
+  .project-item:hover::after { opacity: 1; }
+
+  .project-num {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    letter-spacing: 0.1em; color: rgba(245,240,232,0.3); padding-top: 0.3rem;
+  }
+  .project-client {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.4rem, 2.5vw, 2.2rem); font-weight: 700;
+    color: var(--cream); margin-bottom: 0.4rem; transition: color 0.3s;
+  }
+  .project-item:hover .project-client { color: var(--gold); }
+  .project-sub {
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(245,240,232,0.4); margin-bottom: 1.2rem;
+  }
+
+  /* Expandable panel */
+  .project-expand {
+    display: none;
+    margin-top: 1.8rem;
+  }
+  .project-item.open .project-expand { display: block; }
+
+  /* Image grid in expand */
+  .project-images {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px; margin-bottom: 2rem;
+  }
+  .project-images.cols-3 { grid-template-columns: 1fr 1fr 1fr; }
+
+  .img-slot {
+    aspect-ratio: 4 / 3;
+    background: rgba(245,240,232,0.04);
+    border: 1px dashed rgba(245,240,232,0.2);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 0.5rem; text-align: center; padding: 1rem;
+    transition: background 0.3s, border-color 0.3s;
+    /* Replace background with background-image: url('...') to add real images */
+  }
+  .img-slot:hover { background: rgba(245,240,232,0.07); border-color: rgba(201,168,76,0.4); }
+  .img-slot svg { opacity: 0.22; flex-shrink: 0; }
+  .img-slot-label {
+    font-family: 'DM Mono', monospace; font-size: 0.5rem;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: rgba(245,240,232,0.3); line-height: 1.5;
+  }
+
+  .project-desc {
+    font-size: 1rem; line-height: 1.85;
+    color: rgba(245,240,232,0.65); max-width: 680px;
+  }
+  .project-impact {
+    margin-top: 1.2rem; padding-top: 1.2rem;
+    border-top: 1px solid rgba(245,240,232,0.1);
+    font-family: 'DM Mono', monospace; font-size: 0.62rem;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold);
+  }
+  .project-tags {
+    display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: rgba(245,240,232,0.4); border: 1px solid rgba(245,240,232,0.15);
+    padding: 0.3rem 0.7rem;
+  }
+
+  .project-toggle {
+    font-family: 'DM Mono', monospace; font-size: 0.65rem;
+    color: rgba(245,240,232,0.3); white-space: nowrap; padding-top: 0.5rem;
+    transition: color 0.3s; display: flex; align-items: flex-start; gap: 0.5rem;
+    position: relative; z-index: 2;
+  }
+  .project-item:hover .project-toggle { color: var(--gold); }
+  .toggle-icon {
+    display: inline-flex; width: 22px; height: 22px;
+    border: 1px solid currentColor; border-radius: 50%;
+    align-items: center; justify-content: center;
+    font-size: 1rem; line-height: 1; font-family: monospace;
+    transition: transform 0.35s;
+    flex-shrink: 0;
+  }
+  .project-item.open .toggle-icon { transform: rotate(45deg); }
+
+  /* CLIENTS */
+  .clients { padding: 8rem 3rem; border-top: 1px solid var(--border); }
+  .clients h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 400;
+    font-style: italic; margin-bottom: 4rem;
+  }
+  .clients-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1px; border: 1px solid var(--border);
+  }
+  .client-card {
+    padding: 2rem; border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.3s; position: relative; overflow: hidden;
+  }
+  .client-card:hover { background: rgba(201,168,76,0.04); }
+  .client-card::before {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--gold); transition: width 0.4s;
+  }
+  .client-card:hover::before { width: 100%; }
+  .client-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .client-sector {
+    font-family: 'DM Mono', monospace; font-size: 0.58rem;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.8rem;
+  }
+  .client-detail { font-size: 0.9rem; line-height: 1.7; color: var(--warm-gray); }
+
+  /* SERVICES */
+  .services { padding: 8rem 3rem; background: var(--paper); border-top: 1px solid var(--border); }
+  .services-header { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; margin-bottom: 5rem; }
+  .services-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.5rem, 4vw, 3.5rem); font-weight: 900; line-height: 1; align-self: end;
+  }
+  .services-header h2 em { font-style: italic; color: var(--rust); }
+  .services-intro { font-size: 1.05rem; line-height: 1.85; color: #3A3730; align-self: end; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+  .service-card {
+    background: var(--cream); padding: 2.5rem;
+    position: relative; overflow: hidden; transition: background 0.3s;
+  }
+  .service-card:hover { background: var(--ink); }
+  .service-num {
+    font-family: 'DM Mono', monospace; font-size: 0.55rem;
+    letter-spacing: 0.2em; color: var(--gold); margin-bottom: 1.5rem; display: block;
+  }
+  .service-name {
+    font-family: 'Playfair Display', serif; font-size: 1.3rem;
+    font-weight: 700; margin-bottom: 1rem; transition: color 0.3s;
+  }
+  .service-card:hover .service-name { color: var(--cream); }
+  .service-desc { font-size: 0.92rem; line-height: 1.8; color: var(--warm-gray); transition: color 0.3s; }
+  .service-card:hover .service-desc { color: rgba(245,240,232,0.6); }
+  .service-arrow {
+    position: absolute; bottom: 2rem; right: 2rem; font-size: 1.2rem;
+    color: var(--gold); opacity: 0; transition: opacity 0.3s, transform 0.3s;
+  }
+  .service-card:hover .service-arrow { opacity: 1; transform: translate(2px, -2px); }
+
+  /* PHILOSOPHY */
+  .philosophy {
+    padding: 10rem 3rem; border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; align-items: center;
+  }
+  .philosophy-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 400;
+    font-style: italic; line-height: 1.4;
+    position: relative; padding-left: 2rem;
+  }
+  .philosophy-quote::before {
+    content: '\201C'; position: absolute; left: 0; top: -0.5rem;
+    font-size: 5rem; color: var(--gold); font-style: normal; line-height: 1; opacity: 0.4;
+  }
+  .philosophy-body p { font-size: 1rem; line-height: 1.9; color: #3A3730; margin-bottom: 1.5rem; }
+
+  /* CONTACT */
+  .contact {
+    padding: 8rem 3rem; background: var(--ink); color: var(--cream);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+  }
+  .contact-left h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 5vw, 5rem); font-weight: 900;
+    line-height: 0.95; margin-bottom: 2rem; color: var(--cream);
+  }
+  .contact-left h2 em { color: var(--gold); font-style: italic; }
+  .contact-left p { font-size: 1rem; color: rgba(245,240,232,0.6); line-height: 1.8; max-width: 400px; }
+  .contact-link {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 2rem 0; border-top: 1px solid rgba(245,240,232,0.12);
+    text-decoration: none; color: var(--cream); transition: color 0.3s; gap: 2rem;
+  }
+  .contact-link:last-child { border-bottom: 1px solid rgba(245,240,232,0.12); }
+  .contact-link:hover { color: var(--gold); }
+  .contact-link-label {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: rgba(245,240,232,0.3); min-width: 80px;
+  }
+  .contact-link-value { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; font-style: italic; flex: 1; }
+  .contact-link-arrow { font-size: 1.1rem; transition: transform 0.3s; }
+  .contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 3rem; background: var(--ink);
+    border-top: 1px solid rgba(245,240,232,0.08);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  footer span {
+    font-family: 'DM Mono', monospace; font-size: 0.6rem;
+    letter-spacing: 0.12em; color: rgba(245,240,232,0.2); text-transform: uppercase;
+  }
+
+  /* SCROLL REVEAL */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 0.25; }
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: var(--cream); }
+  ::-webkit-scrollbar-thumb { background: var(--gold); }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    nav { padding: 1.2rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; }
+    .hero-right { min-height: 40vh; }
+    .hero-left { padding: 6rem 1.5rem 3rem; }
+    .about { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .philosophy { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .contact { grid-template-columns: 1fr; gap: 3rem; padding: 4rem 1.5rem; }
+    .work, .services, .clients { padding: 4rem 1.5rem; }
+    .services-header { grid-template-columns: 1fr; gap: 2rem; }
+    .services-grid { grid-template-columns: 1fr; }
+    .expertise-grid { grid-template-columns: 1fr; }
+    .project-item { grid-template-columns: 40px 1fr 30px; gap: 1rem; }
+    .clients-grid { grid-template-columns: 1fr; }
+    .project-images, .project-images.cols-3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Emmanuella Jossy</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#work">Work</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">Strategic Creative Director</p>
+    <h1 class="hero-name">Brand &amp;<br><em>Growth</em><br>Expert</h1>
+    <p class="hero-title">Strategy &middot; Culture &middot; Performance</p>
+    <a href="#work" class="hero-cta">View Selected Work</a>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-pattern"></div>
+    <div class="hero-large-text">Create</div>
+
+    <!--
+      PORTRAIT IMAGE PLACEHOLDER
+      To replace: remove the svg + span below, then add a real <img> tag:
+      <img src="your-photo.jpg" alt="Emmanuella Jossy" style="width:100%;height:100%;object-fit:cover;">
+    -->
+    <div class="hero-portrait">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="3" width="18" height="18" rx="1"/>
+        <circle cx="8.5" cy="8.5" r="1.5"/>
+        <path d="M21 15l-5-5L5 21"/>
+      </svg>
+      <span class="hero-portrait-label">Portrait / Hero Photo<br>Recommended: 600 &times; 800 px</span>
+    </div>
+
+    <div class="hero-stat-block">
+      <div class="hero-stat">
+        <div class="stat-num">60M+</div>
+        <div class="stat-label">Customers Reached</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">167K</div>
+        <div class="stat-label">New Users in 90 Days</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Years Experience</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num">12+</div>
+        <div class="stat-label">Brand Sectors</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-left">
+    <div class="section-label">About</div>
+  </div>
+  <div class="about-right reveal">
+    <h2>I build campaigns and brand systems that drive measurable business outcomes.</h2>
+    <p class="about-body">Over six years, I've led multi-million-naira campaigns for leading financial institutions, scaled digital products, and transformed legacy brands into growth-focused, digitally fluent businesses. My work sits at the intersection of strategy, culture, and performance&mdash;balancing creativity with operational rigor.</p>
+    <p class="about-body">From national banking activations reaching 60M+ customers to targeted digital campaigns delivering 167,000 new users in 90 days, I translate brand vision into scalable impact.</p>
+    <div class="expertise-grid">
+      <div class="expertise-item">Brand &amp; Growth Strategy</div>
+      <div class="expertise-item">Integrated Campaign Direction</div>
+      <div class="expertise-item">Go-to-Market Architecture</div>
+      <div class="expertise-item">Marketing Infrastructure</div>
+      <div class="expertise-item">Executive Communications</div>
+      <div class="expertise-item">Product &amp; Platform Positioning</div>
+    </div>
+  </div>
+</section>
+
+<!-- WORK -->
+<section class="work" id="work">
+  <div class="work-header reveal">
+    <div>
+      <div class="section-label">Selected Works</div>
+      <h2>Work that<br><em>matters</em></h2>
+    </div>
+  </div>
+
+  <div class="projects-list">
+
+    <!-- 01 ACCESS BANK -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">01</div>
+      <div class="project-content">
+        <div class="project-client">Access Bank</div>
+        <div class="project-sub">Nigeria's Largest Retail Bank &middot; 60M+ Customers &middot; 2024&ndash;2026</div>
+        <div class="project-expand">
+          <div class="project-images">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Campaign Creative<br>e.g. DiamondXtra visual</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Activation / Event<br>Photography</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Digital / In-App<br>Messaging Sample</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Brand Collateral /<br>Print</div>
+            </div>
+          </div>
+          <p class="project-desc">As Creative Director on the agency side, I directed campaigns across retail, SME, and private banking segments while managing creative output for 15&ndash;30 weekly briefs spanning in-app messaging, email, events, and national activations. I developed go-to-market strategies for new financial products, designed product branding that drove adoption, and created the narrative architecture for USSD campaigns and DiamondXtra, the bank's flagship savings and rewards program. The team ideated campaigns including radio scripts aired across national stations, experiential activations in key markets, and integrated digital content sustaining engagement across 8M+ active users.</p>
+          <div class="project-impact">Impact &mdash; Cohesive creative direction for a brand touching 1 in 3 Nigerians, orchestrating campaigns that balanced scale with personalization across multiple product lines.</div>
+          <div class="project-tags">
+            <span class="tag">Brand Communications</span>
+            <span class="tag">Creative Direction</span>
+            <span class="tag">Campaign Strategy</span>
+            <span class="tag">Product Design</span>
+            <span class="tag">ATL / BTL</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+    <!-- 02 LEARN AFRICA -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">02</div>
+      <div class="project-content">
+        <div class="project-client">Learn Africa</div>
+        <div class="project-sub">Legacy Publishing House &rarr; Edtech &middot; 2024&ndash;2026</div>
+        <div class="project-expand">
+          <div class="project-images">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">App UI / Platform<br>Screenshot</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Paid Social Ad<br>Creative</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Brand / Content<br>Framework</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Results / Analytics<br>Visual</div>
+            </div>
+          </div>
+          <p class="project-desc">I helped Learn Africa solve an existential challenge: how does a 40-year-old publishing institution become a competitive digital education platform? I built their marketing infrastructure from the ground up&mdash;brand and content frameworks, channel strategies aligning legacy equity with modern edtech positioning. The user acquisition campaign generated 167,000 new app users and delivered over 1.2 million impressions in six months using only paid social and search. The partnership extended to advisory work including CSR campaigns, government partnership pitches for state-level curriculum integration, and a go-to-market playbook for their mobile-first learning platform.</p>
+          <div class="project-impact">Impact &mdash; 167,000 new app users &middot; 1.2M+ impressions in six months. Transformed a print-era brand into a digitally fluent education company with measurable user growth.</div>
+          <div class="project-tags">
+            <span class="tag">Digital Marketing</span>
+            <span class="tag">Brand Communications</span>
+            <span class="tag">GTM Strategy</span>
+            <span class="tag">Business Consulting</span>
+            <span class="tag">User Acquisition</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+    <!-- 03 SPARKLE -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">03</div>
+      <div class="project-content">
+        <div class="project-client">Sparkle MFB</div>
+        <div class="project-sub">Nigeria's Lifestyle Banking Platform &middot; 2024&ndash;2026</div>
+        <div class="project-expand">
+          <div class="project-images">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Campaign Creative /<br>Social Ad</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Brand Visual /<br>Key Visual</div>
+            </div>
+          </div>
+          <p class="project-desc">Sparkle positions itself as the lifestyle bank for young, ambitious Nigerians who want financial services that understand their world. I developed creative concepts that translated banking features into cultural statements and supported rapid-turnaround marketing requests with ideation that balanced brand aspiration with conversion goals.</p>
+          <div class="project-impact">Impact &mdash; Brand visibility through culturally resonant creative that differentiated Sparkle from legacy banks and fintech disruptors alike.</div>
+          <div class="project-tags">
+            <span class="tag">Campaign Ideation</span>
+            <span class="tag">Brand Communications</span>
+            <span class="tag">Creative Direction</span>
+            <span class="tag">Culture Marketing</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+    <!-- 04 ALARA -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">04</div>
+      <div class="project-content">
+        <div class="project-client">Alara Lagos</div>
+        <div class="project-sub">Luxury Lifestyle Destination &middot; African Art, Fashion &amp; Design &middot; 2022</div>
+        <div class="project-expand">
+          <div class="project-images cols-3">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Editorial Content /<br>Collection Campaign</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Event Coverage /<br>Activation Photo</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Social Content /<br>Influencer Post</div>
+            </div>
+          </div>
+          <p class="project-desc">Alara is where Africa's creative elite gather&mdash;a luxury retail and cultural space in Victoria Island curating the continent's finest designers, artists, and culinary experiences. As social media and content strategist, I crafted campaigns for exclusive launches, seasonal collections, and B2B collaborations with global fashion houses and local tastemakers. I produced high-concept editorial content for product drops, managed media relations with international fashion press, and executed influencer partnerships that drove both foot traffic and online engagement.</p>
+          <div class="project-impact">Impact &mdash; Strengthened brand positioning as West Africa's premier luxury lifestyle destination through storytelling honoring African design heritage while speaking to global luxury standards.</div>
+          <div class="project-tags">
+            <span class="tag">Social Media Strategy</span>
+            <span class="tag">Content Development</span>
+            <span class="tag">Brand Partnerships</span>
+            <span class="tag">Luxury Marketing</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+    <!-- 05 HERTUNBA -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">05</div>
+      <div class="project-content">
+        <div class="project-client">Hertunba</div>
+        <div class="project-sub">Contemporary Fashion Brand &middot; Global Expansion &middot; 2024</div>
+        <div class="project-expand">
+          <div class="project-images">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Magazine Spread /<br>Art Direction</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Press Collateral /<br>Collection Visual</div>
+            </div>
+          </div>
+          <p class="project-desc">During Hertunba's international expansion, I designed communication processes and collateral preparing the brand for global stages. I developed press materials and communication frameworks for collection launches, art-directed a magazine, and produced social content positioning the brand within contemporary African fashion narratives while appealing to international buyers and press.</p>
+          <div class="project-impact">Impact &mdash; Scalable brand communication systems during a critical growth phase, supporting successful international debuts and press placements.</div>
+          <div class="project-tags">
+            <span class="tag">Brand Communications</span>
+            <span class="tag">Marketing Strategy</span>
+            <span class="tag">Press Partnerships</span>
+            <span class="tag">Art Direction</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+    <!-- 06 MARIN -->
+    <div class="project-item reveal" onclick="toggleProject(this)">
+      <div class="project-num">06</div>
+      <div class="project-content">
+        <div class="project-client">Marin Hair Transplant</div>
+        <div class="project-sub">Medical Aesthetics Clinic &middot; 2025</div>
+        <div class="project-expand">
+          <div class="project-images">
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">Website Screenshot /<br>Landing Page</div>
+            </div>
+            <div class="img-slot">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="1"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+              <div class="img-slot-label">AI Video Thumbnail /<br>Ad Still</div>
+            </div>
+          </div>
+          <p class="project-desc">I overhauled Marin's digital presence to match the sophistication of their medical services&mdash;rewriting website content to balance clinical authority with empathetic, patient-first messaging. I built their marketing infrastructure and produced AI-generated video content that drove conversion in accessible, relatable ways.</p>
+          <div class="project-impact">Impact &mdash; Created the marketing infrastructure for business success while modernizing brand perception in a highly competitive medical aesthetics market.</div>
+          <div class="project-tags">
+            <span class="tag">Website Development</span>
+            <span class="tag">Marketing Infrastructure</span>
+            <span class="tag">AI Content</span>
+            <span class="tag">GTM Strategy</span>
+          </div>
+        </div>
+      </div>
+      <div class="project-toggle"><span class="toggle-icon">+</span></div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ADDITIONAL CLIENTS -->
+<section class="clients" id="clients">
+  <div class="section-label reveal">Additional Clients</div>
+  <h2 class="reveal">Across Industries &amp; Scales</h2>
+  <div class="clients-grid">
+    <div class="client-card reveal">
+      <div class="client-name">Cardinal Stone</div>
+      <div class="client-sector">Investment &amp; Securities &middot; 2024&ndash;2026</div>
+      <div class="client-detail">Creative concepts and visual executions for internal communications, print collateral, and investor materials&mdash;translating complex financial products into compelling narratives.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Multigate</div>
+      <div class="client-sector">B2B Services &middot; 2025</div>
+      <div class="client-detail">Messaging architecture including 2D animated explainer videos that clarified service offerings and enabled sales conversations.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Visit Nigeria</div>
+      <div class="client-sector">Tourism Initiative &middot; 2025&ndash;2026</div>
+      <div class="client-detail">Website content, partnership pitch decks, and press materials repositioning Nigeria's tourism narrative for international and diaspora audiences.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Chayim Diagnostics</div>
+      <div class="client-sector">Healthcare &middot; 2024</div>
+      <div class="client-detail">Website content and UGC campaigns that built trust and awareness for diagnostic services in underserved markets.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Gather</div>
+      <div class="client-sector">Tech Startup &middot; 2025</div>
+      <div class="client-detail">Go-to-market strategy and website messaging for a community-building platform, focusing on value proposition clarity and early adopter activation.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">NIBSS</div>
+      <div class="client-sector">Fintech Infrastructure &middot; 2024</div>
+      <div class="client-detail">Digital marketing campaigns promoting interbank payment systems to financial institutions and consumers.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Custodian Investment</div>
+      <div class="client-sector">Financial Services &middot; 2024</div>
+      <div class="client-detail">Brand executions across marketing collateral, presentations, and client-facing materials.</div>
+    </div>
+    <div class="client-card reveal">
+      <div class="client-name">Lid Stores</div>
+      <div class="client-sector">Retail &middot; 2024&ndash;2026</div>
+      <div class="client-detail">Brand identity refinement and relaunch campaign including ad creative, in-store messaging, and social content repositioning for a younger demographic.</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-header">
+    <h2 class="reveal">What I<br><em>Do Best</em></h2>
+    <p class="services-intro reveal">From concept to execution&mdash;I direct integrated campaigns, build marketing systems, and create the words and images that transform brands into growth engines.</p>
+  </div>
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <span class="service-num">01</span>
+      <div class="service-name">Brand &amp; Campaign Strategy</div>
+      <div class="service-desc">Positioning, messaging frameworks, and campaign architectures that define what you stand for and drive business results.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">02</span>
+      <div class="service-name">Creative Direction</div>
+      <div class="service-desc">From concept to execution&mdash;directing integrated campaigns across channels with creative consistency and cultural resonance at every touchpoint.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">03</span>
+      <div class="service-name">Integrated Marketing</div>
+      <div class="service-desc">End-to-end marketing programs connecting strategy, creative, media, and measurement into cohesive growth engines.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">04</span>
+      <div class="service-name">Content Development</div>
+      <div class="service-desc">The words and images that bring brands to life&mdash;website copy, video scripts, social content, and editorial campaigns.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">05</span>
+      <div class="service-name">Website Development</div>
+      <div class="service-desc">Digital experiences that convert&mdash;combining UX intuition, persuasive copy, and brand storytelling into sites that serve users and business goals.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">06</span>
+      <div class="service-name">Personal Branding</div>
+      <div class="service-desc">Helping leaders define and communicate their unique value through content strategies, LinkedIn presence, and executive narratives that open doors.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+    <div class="service-card reveal">
+      <span class="service-num">07</span>
+      <div class="service-name">SEO &amp; Ghostwriting</div>
+      <div class="service-desc">Thought leadership and search-optimized content that builds authority, drives traffic, and supports executive personal branding.</div>
+      <div class="service-arrow">&#8599;</div>
+    </div>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="philosophy">
+  <div class="philosophy-quote reveal">
+    Great creative work doesn't just look good&mdash;it changes behavior, shifts perception, and drives measurable outcomes.
+  </div>
+  <div class="philosophy-body reveal">
+    <p>I believe the best campaigns are built on strategic clarity, cultural intelligence, and the courage to say something that matters. Whether directing a campaign for 60 million bank customers or crafting the brand story for a founder's first product, I bring the same obsession: making sure every word, image, and idea earns its place.</p>
+    <p>I've worked agency-side and in-house. I've built teams and worked solo. I've launched products, repositioned legacy brands, and written the decks that closed partnerships. What ties it all together is a belief that marketing is most powerful when it's both art and science&mdash;when creativity serves strategy, and strategy serves growth.</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-left reveal">
+    <div class="section-label" style="color:rgba(245,240,232,0.4);">
+      <span style="display:inline-block;width:40px;height:1px;background:rgba(245,240,232,0.4);flex-shrink:0;"></span>
+      Let's Work
+    </div>
+    <h2>Let's build<br>something<br><em>that matters</em></h2>
+    <p>Available for brand strategy, creative direction, integrated campaigns, and consulting engagements. Let's talk about what you're building.</p>
+  </div>
+  <div class="contact-right reveal">
+    <!-- Update these with your real details -->
+    <a href="mailto:hello@emmanuellajossy.com" class="contact-link">
+      <span class="contact-link-label">Email</span>
+      <span class="contact-link-value">hello@emmanuellajossy.com</span>
+      <span class="contact-link-arrow">&#8599;</span>
+    </a>
+    <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" class="contact-link">
+      <span class="contact-link-label">LinkedIn</span>
+      <span class="contact-link-value">Connect professionally</span>
+      <span class="contact-link-arrow">&#8599;</span>
+    </a>
+    <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" class="contact-link">
+      <span class="contact-link-label">Twitter / X</span>
+      <span class="contact-link-value">Follow the work</span>
+      <span class="contact-link-arrow">&#8599;</span>
+    </a>
+    <a href="tel:+234" class="contact-link">
+      <span class="contact-link-label">Phone</span>
+      <span class="contact-link-value">Schedule a call</span>
+      <span class="contact-link-arrow">&#8599;</span>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Emmanuella Jossy &middot; Strategic Creative Director &middot; Brand &amp; Growth Expert</span>
+  <span>Lagos, Nigeria &middot; &copy; 2026</span>
+</footer>
+
+<script>
+  /* ── Custom Cursor ── */
+  var cursor = document.getElementById('cursor');
+  var ring   = document.getElementById('cursorRing');
+  var mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  (function animateRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animateRing);
+  })();
+
+  var hoverTargets = document.querySelectorAll('a, button, .project-item, .service-card, .client-card, .expertise-item');
+  hoverTargets.forEach(function(el) {
+    el.addEventListener('mouseenter', function() {
+      cursor.classList.add('hover');
+      ring.classList.add('hover');
+    });
+    el.addEventListener('mouseleave', function() {
+      cursor.classList.remove('hover');
+      ring.classList.remove('hover');
+    });
+  });
+
+  /* ── Scroll Reveal ── */
+  var revealObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry, i) {
+      if (entry.isIntersecting) {
+        setTimeout(function() {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        revealObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    revealObserver.observe(el);
+  });
+
+  /* ── Project Toggle (click to expand / collapse) ── */
+  function toggleProject(el) {
+    var wasOpen = el.classList.contains('open');
+    document.querySelectorAll('.project-item').forEach(function(p) {
+      p.classList.remove('open');
+    });
+    if (!wasOpen) {
+      el.classList.add('open');
+    }
+  }
+</script>
+
+</body>
+</html>
